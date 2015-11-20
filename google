@@ -1,14 +1,21 @@
+#!/usr/bin/env python
+from __future__ import print_function
+
+import argparse
 import urllib
 import sys
-import json as m_json
-#query = raw_input ( 'Query: ' )
-query = sys.argv[1:]
-query = urllib.urlencode ( { 'q' : query } )
-response = urllib.urlopen ( 'http://ajax.googleapis.com/ajax/services/search/web?v=1.0&' + 
-query ).read()
-json = m_json.loads ( response )
-results = json [ 'responseData' ] [ 'results' ]
-for result in results:
-    title = result['titleNoFormatting']
-    url = result['url']   # was URL in the original and that threw a name error exception
-    print ( title + '\n' + url+ '\n')
+import json
+
+def main():
+    parser = argparse.ArgumentParser(progname="google")
+    parser.add_argument("query", help="search term")
+    args = parser.parse_args()
+    data = json.loads( urllib.urlopen ( 'http://ajax.googleapis.com/ajax/services/search/web?v=1.0&' + urllib.urlencode ( { 'q' : args.query } ) ).read())
+    for result in data['responseData']['results']:
+        title = result['titleNoFormatting']
+        url = result['url']   # was URL in the original and that threw a name error exception
+        print ( title + '\n' + url+ '\n')
+    return 0
+
+if __name__ == "__main__":
+    sys.exit(main())
