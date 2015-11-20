@@ -1,6 +1,8 @@
 import urllib
+import sys
 import json as m_json
-query = raw_input ( 'Query: ' )
+#query = raw_input ( 'Query: ' )
+query = sys.argv[1:]
 query = urllib.urlencode ( { 'q' : query } )
 response = urllib.urlopen ( 'http://ajax.googleapis.com/ajax/services/search/web?v=1.0&' + 
 query ).read()
